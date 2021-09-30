@@ -1,7 +1,18 @@
-import React from "react";
-import galleryLinkData from "./data/gallery_links.json";
+import React, { useState, useEffect } from "react";
+//import galleryLinkData from "./data/gallery_images.json";
 
 const Welcome = () => {
+  const [galleryLinkData, setGalleryLinkData] = useState([]);
+  const loanGalleryLinkData = async () => {
+    const resp = await fetch(
+      "https://5ak34wf4u5.execute-api.us-west-2.amazonaws.com/Production/galleryimages"
+    );
+    let jsonData = await resp.json();
+    setGalleryLinkData(jsonData);
+  };
+  useEffect(() => {
+    loanGalleryLinkData();
+  }, []);
   return (
     <div className="scene" id="welcome">
       <article className="content">
@@ -9,9 +20,9 @@ const Welcome = () => {
           {galleryLinkData.map((link) => (
             <img
               className={link.className}
-              key={link.name}
-              src={link.image}
-              alt={link.alttext}
+              key={link.src}
+              src={link.src}
+              alt={link.alt}
             />
           ))}
         </div>
